@@ -13,23 +13,34 @@ import Cookies from "js-cookie";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 
-const client = new ApolloClient({
-  fetch: fetch,
-  fetchOptions: {
-    credentials: "include",
-  },
-});
+// const client = new ApolloClient({
+//   fetch: fetch,
+//   fetchOptions: {
+//     credentials: "include",
+//   },
+// });
 class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props;
-    const shopOrigin = Cookies.get("shopOrigin");
+    // const shopOrigin = Cookies.get("shopOrigin");
     return (
       <React.Fragment>
         <Head>
             <title>OptimizeXP</title>
             <meta charSet="utf-8" />
           </Head>
-        <AppProvider i18n={translations}>
+
+          {/* <h1>OptimizeXP Test</h
+          1> */}
+
+          <AppProvider i18n={translations}>
+
+            <Component {...pageProps} />
+
+          </AppProvider>
+
+          
+        {/* <AppProvider i18n={translations}>
           <Provider
             config={{
               apiKey: API_KEY,
@@ -41,7 +52,7 @@ class MyApp extends App {
               <Component {...pageProps} />
             </ApolloProvider>
           </Provider>
-        </AppProvider>
+        </AppProvider> */}
       </React.Fragment>
     );
   }

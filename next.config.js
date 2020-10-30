@@ -11,3 +11,8 @@ module.exports = withCSS({
     return config;
   }
 });
+
+module.exports = {
+  // Target must be serverless
+  target: 'serverless'
+};
