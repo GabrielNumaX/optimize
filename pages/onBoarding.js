@@ -32,7 +32,7 @@ class onBoarding extends React.Component {
                         <Heading>Welcome to OptimizeXP</Heading><br></br>
                         <p> <font size = "3">Because you should only define your catalog once </font></p>
                         <p><font size = "3"> Use OptimizeXP to Improve Content Engagement, Reduce Card Abandonments, Increase Sales </font></p><br></br>
-                        <Button  url="/allExperiments" >Start new Test<br></br></Button>      
+                        {/* <Button  url="/allExperiments" >Start new Test<br></br></Button>       */}
                     </div>
                 </Card>
 
