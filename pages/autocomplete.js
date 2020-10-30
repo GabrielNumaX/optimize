@@ -5,7 +5,6 @@ import {useState, useCallback} from 'react';
 
 const AutocompleteExample = (props) => {
     
-    console.log("props.val ", props.val)
     var deselectedOptions = [];
     var selectedProducts = [];
     var media = props.val.map(function(item, index){
