@@ -23,6 +23,9 @@ import {
 
 import { useState, useCallback } from 'react';
 
+//data persist in localStorage
+import store from 'store-js';
+
 const configTime = () => {
 
     // const [startDate, setStartDate] = useState('');
@@ -33,16 +36,22 @@ const configTime = () => {
 
     // const handleEndDateChange = useCallback((newValue) => setEndDate(newValue), []);
 
-    const [{month, year}, setDate] = useState({month: 11, year: 2020});
+    const calendar = new Date()
+
+    const [{month, year}, setDate] = useState({month: calendar.getMonth(), year: calendar.getFullYear()});
     const [selectedDates, setSelectedDates] = useState({
-      start: new Date('Thu Oct 28 2020 00:00:00 GMT-0500 (EST)'),
-      end: new Date('Mon Nov 09 2020 00:00:00 GMT-0500 (EST)'),
+      start: calendar,
+      end: calendar,
     });
   
     const handleMonthChange = useCallback(
       (month, year) => setDate({month, year}),
       [],
     );
+
+    console.log(selectedDates);
+
+    store.set('optimize-dates', selectedDates);
 
     return ( 
         <Page
@@ -113,37 +122,11 @@ const configTime = () => {
                     />
                 </Card.Section>
 
-                {/* <Card.Section>
-                    <TextField 
-                        label="Start Date" 
-                        value={price} 
-                        onChange={handlePriceChange}
-                        prefix= '$'
-                        type= 'number' />
-
-                    <div
-                        style={{
-                            width: '100%',
-                            height: '10px',
-                        }}>
-                    </div>
-
-                    <Button plain size="large">+ Add another</Button>
-
-                    <div
-                    style={{
-                        width: '100%',
-                        height: '10px',
-                    }}>
-                    </div>
-
-                </Card.Section> */}
-
             </Card>
 
             <PageActions
                 primaryAction={{
-                    content: 'Submit',
+                    content: 'Review',
                     url: '/review',
                     loading: false,
                     onAction: () => { }

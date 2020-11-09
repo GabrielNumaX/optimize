@@ -21,6 +21,9 @@ import { SearchMinor } from '@shopify/polaris-icons';
 
 import { useState, useCallback } from 'react';
 
+//redux persist in localStorage
+import store from 'store-js';
+
 
 // class selectProduct extends React.Component {
 const selectProduct = () => {
@@ -117,7 +120,7 @@ const selectProduct = () => {
                 <Card.Section>
                     <MediaCard title="Black T-Shirt" 
                         primaryAction={{
-                            content: 'Select',
+                            content: 'Add Variant',
                             onAction: () => {},  
                             url: '/selectTitle'
                         }} 

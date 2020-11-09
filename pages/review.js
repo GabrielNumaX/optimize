@@ -1,148 +1,161 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { 
     Page, 
-    Card,
     Layout, 
-    Stack,
-    Heading,
     Button,
-    Badge,
-    TextContainer,
-    TextStyle,
-    ButtonGroup,
-    Autocomplete,
-    Icon,
-    MediaCard,
-    Thumbnail,
-    PageActions,
-    Banner,
-    TextField,
-    DatePicker,
-    VideoThumbnail
 } from '@shopify/polaris';
 
+import axios from 'axios'
 
-const review = () => {
+//data persist in localStorage
+import store from 'store-js';
 
-    return ( 
-        <Page
-            breadcrumbs={[{content: 'Select Product', url: '/selectProduct'}]}
-            title="Review"    
-        >
+// date format
+import format  from 'date-fns/format'
 
-            <Card>
+import LayoutCombinations from './components/layoutCombinations';
 
-                <Card.Section>
+// const review = () => {
+class review extends Component {
 
-                    <TextField label="Product Title" value={'value from backend'} readOnly={true} />
+    constructor(props){
+        super(props);
+        
+        this.state = {
+            titles: [],
+            descriptions: [],
+            prices: [],
+            dates: {},
+            variants: [],
+        }
+    }
 
-                    <div
+    componentDidMount() {
+
+        // this handles localStorage
+        const titles = store.get('optimize-titles');
+        const descriptions = store.get('optimize-descriptions');
+        const prices = store.get('optimize-prices');
+        let dates = JSON.parse(localStorage.getItem('optimize-dates'));
+
+        const startDate = new Date(dates.start);
+
+        const endDate = new Date(dates.end);
+
+        const parseDate = {
+            start: format(startDate,'d MMM yyy'),
+            end: format(endDate, 'd MMM yyyy')
+        }
+
+            this.setState({
+                titles: titles,
+                descriptions: descriptions,
+                prices: prices,
+                dates: parseDate,
+            })
+
+        // this handles layout combinations to state
+        const variantsArr = [];
+        
+        titles.map(title => { 
+
+            return descriptions.map(description => {
+
+                return prices.map(price => {
+
+                    const variantObj = {
+                        title,
+                        description,
+                        price,
+                    }
+
+                    return variantsArr.push(variantObj);
+                })
+            })
+        });
+
+        this.setState({variants: [...variantsArr]});
+    }
+
+    renderLayouts = () => {    
+
+        const layouts = this.state.variants.map((item, pos) => {
+
+            return (
+                    <LayoutCombinations key={pos} title={item.title} description={item.description}
+                    price={item.price} startDate={this.state.dates.start}
+                    endDate={this.state.dates.end} idToRemove={pos}
+                    remove={() => this.removeVariant(pos)}/>
+                )
+        })
+
+        return layouts;
+    }
+
+
+    // this is temporal -> POS must be changed to item.id
+    removeVariant = (id) => {
+
+        const prods = this.state.variants.filter((item, pos) => {
+
+            if(pos === id) {
+                return false;
+            }
+
+            return true;
+        })
+
+        store.set('optimize-prods', prods);
+
+        this.setState({variants: [...prods]});
+    }
+
+    submitVariant = ('http://localhost:3000/v1/optimize') => {
+
+        axios.post()
+
+        console.log(this.state.variants)
+    }
+
+    render() {
+
+        console.log(this.state);
+
+        return ( 
+            <Page
+                breadcrumbs={[{content: 'Select Product', url: '/selectProduct'}]}
+                title="Review"    
+            >
+                {this.renderLayouts()}
+
+                <div
                     style={{
                         width: '100%',
-                        height: '40px',
+                        height: '30px',
                     }}>
-                    </div>
+                </div>
 
-                    <TextField label="Description" 
-                                value={'value from backend'} 
-                                readOnly={true}
-                                multiline={4}/>
-
-                    <div
-                    style={{
+                <div style={{
                         width: '100%',
-                        height: '10px',
-                    }}>
-                    </div>
-                </Card.Section>
-            </Card>
-
-            <Card>
-                <Card.Section>
-                    <TextField 
-                        label="Start Date" 
-                        value={'date from backend'} 
-                        readOnly={true} />
-
-                    <div
-                        style={{
-                            width: '100%',
-                            height: '10px',
-                        }}>
-                    </div>
-
-                    <TextField 
-                        label="End Date" 
-                        value={'date from backend'} 
-                        readOnly={true} />
-
-                    <div
-                        style={{
-                            width: '100%',
-                            height: '70px',
-                        }}>
-                    </div>
-
-                    <MediaCard
-                        portrait
-                        title="Black T-Shirt"
-                        primaryAction={{
-                            content: 'Learn more',
-                            onAction: () => {},
-                        }}
-                        // description="In this course, you’ll learn how the Kular family turned their mom’s recipe book into a global business."
-                        // popoverActions={[{content: 'Dismiss', onAction: () => {}}]}
-                        >
-                        {/* <VideoThumbnail
-                            // videoLength={80}
-                            thumbnailUrl="https://image.freepik.com/psd-gratis/maqueta-camisetas-negras-parte-delantera-trasera-utilizadas-como-plantilla-diseno_34168-864.jpg"
-                        /> */}
-                        <img
-                            alt="product" 
-                            width="100%" 
-                            height="100%" 
-                            style={{
-                            objectFit: 'cover',
-                            objectPosition: 'center'
-                            }} 
-                            src='https://image.freepik.com/psd-gratis/maqueta-camisetas-negras-parte-delantera-trasera-utilizadas-como-plantilla-diseno_34168-864.jpg'
-                        ></img>
-                    </MediaCard>
-                </Card.Section>
-            </Card>
-
-            <div
-                style={{
-                    width: '100%',
-                    height: '30px',
+                        padding: '0 20%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
                 }}>
-            </div>
+                    <Layout sectioned>
+                        <Layout.Section>
+                            <Button primary fullWidth={true} onClick={this.submitVariant}>Submit Variants</Button>
+                        </Layout.Section>
+                        <Layout.Section>
+                            <Button destructive fullWidth={true}>Blacklist This</Button>
+                        </Layout.Section>
+                    </Layout>
+                </div>
 
-            {/* <Stack distribution="center" spacing="extraLoose">
-                <Button primary>Reviewing Variant</Button>
-                <Button destructive>Blacklist This</Button>
-            </Stack> */}
-
-            <div style={{
-                    width: '100%',
-                    padding: '0 20%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-            }}>
-                <Layout sectioned>
-                    <Layout.Section>
-                        <Button primary fullWidth={true}>Reviewing 1 of 1 variant</Button>
-                    </Layout.Section>
-                    <Layout.Section>
-                        <Button destructive fullWidth={true}>Blacklist This</Button>
-                    </Layout.Section>
-                </Layout>
-            </div>
-
-        </Page>
-    )
+            </Page>
+        )
+    }   
 }
 
 export default review;

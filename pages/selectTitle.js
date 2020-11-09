@@ -21,16 +21,42 @@ import {
 } from '@shopify/polaris';
 
 import { useState, useCallback } from 'react';
+import { set } from 'js-cookie';
+
+//redux persist in localStorage
+import store from 'store-js';
 
 const selectTitle = () => {
 
+    // title
     const [title, setTitle] = useState('');
-
     const handleTitleChange = useCallback((newValue) => setTitle(newValue), []);
 
+    // description
     const [description, setDescription] = useState('');
-
     const handleDescriptionChange = useCallback((newValue) => setDescription(newValue), []);
+
+    // title and descriptions arrays
+
+    const [titles, setTitles] = useState([])
+    const [descriptions, setDescriptions] = useState([])
+
+    const addTitle = () => {
+
+        setTitles([...titles, title])
+        setTitle('')
+
+    }
+
+    const addDescription = () => {
+
+        setDescriptions([...descriptions, description]);
+        setDescription('')
+    }
+
+    store.set('optimize-titles', titles)
+    store.set('optimize-descriptions', descriptions)
+    console.log(titles, descriptions);
 
     return ( 
         <Page
@@ -66,7 +92,8 @@ const selectTitle = () => {
                         }}>
                     </div>
 
-                    <Button plain size="large">+ Add another</Button>
+                    <Button plain size="large"
+                    onClick={addTitle}>+ Add another</Button>
 
                     <div
                     style={{
@@ -87,7 +114,8 @@ const selectTitle = () => {
                     }}>
                     </div>
 
-                    <Button plain size="large">+ Add another</Button>
+                    <Button plain size="large"
+                    onClick={addDescription}>+ Add another</Button>
                 </Card.Section>
 
             </Card>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { 
     Page, 
@@ -20,14 +20,27 @@ import {
     TextField,
 } from '@shopify/polaris';
 
+//redux persist in localStorage
+import store from 'store-js';
+
 import { useState, useCallback } from 'react';
 
 const configPrice = () => {
 
-    const [price, setPrice] = useState('');
-
+    const [price, setPrice] = useState();
     const handlePriceChange = useCallback((newValue) => setPrice(newValue), []);
 
+    const [prices, setPrices] = useState([]);
+
+    const addPrices = () => {
+
+        setPrices([...prices, price]);
+        setPrice()
+    }
+
+    store.set('optimize-prices', prices)
+
+    console.log(prices);
     return ( 
         <Page
             breadcrumbs={[{content: 'Select Product', url: '/selectProduct'}]}
@@ -77,7 +90,8 @@ const configPrice = () => {
                         }}>
                     </div>
 
-                    <Button plain size="large">+ Add another</Button>
+                    <Button plain size="large" 
+                    onClick={addPrices}>+ Add another</Button>
 
                     <div
                     style={{
@@ -105,7 +119,7 @@ const configPrice = () => {
 
             <PageActions
                 primaryAction={{
-                    content: 'Submit',
+                    content: 'Select Date',
                     url: '/configTime',
                     loading: false,
                     onAction: () => { }
