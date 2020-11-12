@@ -111,12 +111,12 @@ class review extends Component {
         this.setState({variants: [...prods]});
     }
 
-    submitVariant = ('http://localhost:3000/v1/optimize') => {
+    // submitVariant = ('http://localhost:3000/v1/optimize') => {
 
-        axios.post()
+    //     axios.post()
 
-        console.log(this.state.variants)
-    }
+    //     console.log(this.state.variants)
+    // }
 
     render() {
 

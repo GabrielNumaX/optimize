@@ -4,12 +4,9 @@ import {
         Page, 
         Card,
         Layout, 
-        Stack,
         Heading,
         Button,
-        Badge,
         TextContainer,
-        TextStyle,
     } from '@shopify/polaris';
 
 
@@ -45,15 +42,6 @@ class onBoarding extends React.Component {
                     {/* Heading */}
 
                     <Layout.Section>
-                        {/* <div style={{height: '50px', 
-                                    backgroundColor: '#F8FAFB',
-                                    display: 'flex',
-                                    alignItems: 'center'}}>
-                            <TextContainer>
-                                <p>Let's Get Started</p>
-                            </TextContainer>
-                        </div>          */}
-                        {/* <TextStyle variation="strong">Let's Get Started</TextStyle> */}
                         <TextContainer>
                             <Heading>Let's Get Started</Heading>
                         </TextContainer>
@@ -79,6 +67,10 @@ class onBoarding extends React.Component {
                                         In order to improve your conversions, you first need
                                         to select a product.
                                     </p>
+                            </Card.Section>
+                            <Card.Section>
+                                <Button primary size='large'
+                                        url='/getProducts'>Synchronize Store</Button>
                             </Card.Section>
                         </Card>
                     </Layout.Section>
@@ -109,19 +101,9 @@ class onBoarding extends React.Component {
                             </Card.Section>
 
                             <Card.Section>
-                                {/* <button style={{
-                                    backgroundColor: '#28B7D7',
-                                    color: '#FFF',
-                                    border: 'none',
-                                    borderRadius: '5px',
-                                    fontSize: '18px',
-                                    padding: '8px 20px'
-                                }}
-                               >
-                                   Select a Product
-                                </button> */}
-
-                                <Button url="/selectProduct" size="large">Select Product</Button>
+                                <Button primary 
+                                    url="/selectProduct" 
+                                    size="large">Select Product</Button>
                             </Card.Section>
                         </Card>
                     </Layout.Section>
